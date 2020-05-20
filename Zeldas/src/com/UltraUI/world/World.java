@@ -22,20 +22,6 @@ public class World {
 		public static Tile[] tiles;
 		public static int WIDTH,HEIGHT;
 		public static final int TILE_SIZE = 16;
-	
-	public static void restartGame(String level) {
-		Game.entities.clear();
-		Game.enemies.clear();
-		Game.entities = new ArrayList<Entity>();
-		Game.enemies = new ArrayList<Enemy>();
-		Game.spritesheet = new Spritesheet("/spritesheet.png");
-		Game.player = new Player(0,0,16,16,Game.spritesheet.getSprite(32, 0,16,16));
-		Game.entities.add(Game.player);
-		Game.world = new World("/"+level);
-		return;
-	}
-		
-		
 		
 	public World(String path) {
 		try {
@@ -116,6 +102,18 @@ public class World {
 				(tiles[x2 +(y2*World.WIDTH)] instanceof WallTile) ||
 				(tiles[x3 +(y3*World.WIDTH)] instanceof WallTile) ||
 				(tiles[x4 +(y4*World.WIDTH)] instanceof WallTile));
+	}
+	
+	public static void restartGame(String level) {
+		Game.entities.clear();
+		Game.enemies.clear();
+		Game.entities = new ArrayList<Entity>();
+		Game.enemies = new ArrayList<Enemy>();
+		Game.spritesheet = new Spritesheet("/spritesheet.png");
+		Game.player = new Player(0,0,16,16,Game.spritesheet.getSprite(32, 0,16,16));
+		Game.entities.add(Game.player);
+		Game.world = new World("/"+level);
+		return;
 	}
 
 	public void render(Graphics g) {

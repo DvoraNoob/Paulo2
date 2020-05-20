@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Menu;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -42,6 +41,7 @@ public class Game extends Canvas implements Runnable,KeyListener{
 		public static JFrame frame;
 		public static final int WIDTH = 240;
 		public static final int HEIGHT = 160;
+		public static final int SCALE = 3;
 		public static String gameState = "MENU";
 		public static Menu menu;
 	//
@@ -50,7 +50,6 @@ public class Game extends Canvas implements Runnable,KeyListener{
 		private static final long serialVersionUID = 1L;
 		private Thread thread;
 		private boolean isRunnable = true;
-		private final int SCALE = 3;
 		private int CUR_LEVEL = 1,MAX_LEVEL = 4;
 		private boolean showMessageGameOver = true;
 		private int framesGameOver = 0;
@@ -139,19 +138,18 @@ public class Game extends Canvas implements Runnable,KeyListener{
 						this.showMessageGameOver = true;
 					}
 				}
-			}
+				if(restartGame) {
+					this.restartGame = false;
+					this.gameState = "Normal";
+					CUR_LEVEL = 1;
+					String newWorld = "level"+CUR_LEVEL+".png";
+					World.restartGame(newWorld);
 					
-					
-			if(restartGame) {
-				this.restartGame = false;
-				this.gameState = "Normal";
-				CUR_LEVEL = 1;
-				String newWorld = "level"+CUR_LEVEL+".png";
-				World.restartGame(newWorld);
-				
+				}
 			}else if(gameState == "MENU") {
-				menu
-			}
+				menu.tick();
+			}		
+			
 	}		
 			
 	
@@ -197,15 +195,11 @@ public class Game extends Canvas implements Runnable,KeyListener{
 			if(showMessageGameOver) 
 				g.drawString(">Pressione Enter para reiniciar<", 120, 350);
 		}else if(gameState == "MENU") {
-		 menu
+			menu.render(g);
 		}
 		bs.show();
 			
 }
-	
-	
-	
-	
 	public void run() {
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
